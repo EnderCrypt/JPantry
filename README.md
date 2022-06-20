@@ -23,3 +23,6 @@ You can add this library to your project by adding these 2 entries into your pom
 		</dependencies>
 
 with Tag being the hash of the latest commit, you can also check this page for more information: https://jitpack.io/#EnderCrypt/JPantry/
+
+### Example
+An example of how to use the library, along with some useful comments is available at https://github.com/EnderCrypt/JPantry/blob/master/src/test/java/example/Main.java
