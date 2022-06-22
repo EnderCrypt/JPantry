@@ -65,7 +65,7 @@ public class StandardUnitTests
 		PantryBasket basket = pantry.getBasket(testBasket);
 		
 		// ensure its already empty
-		basket.deleteJson();
+		basket.deleteJson().complete();
 		
 		assertFalse(basket.deleteJson().complete());
 		
