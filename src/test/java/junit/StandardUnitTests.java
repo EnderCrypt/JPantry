@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import endercrypt.library.jpantry.JPantry;
 import endercrypt.library.jpantry.PantryBasket;
+import endercrypt.library.jpantry.PantryDetails;
 import endercrypt.library.jpantry.exception.JPantryAuthenticationException;
 
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,19 @@ public class StandardUnitTests
 				.login();
 			
 		});
+	}
+	
+	@Test
+	public void testThatDetailsAreValid()
+	{
+		JPantry pantry = new JPantry.Builder()
+			.setToken(token)
+			.login();
+		
+		PantryDetails details = pantry.getDetails().complete();
+		
+		assertTrue(details.getName().length() > 0);
+		assertTrue(details.getDescription().length() > 0);
 	}
 	
 	@Test
