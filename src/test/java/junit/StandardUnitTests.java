@@ -4,14 +4,18 @@ package junit;
 import static org.junit.jupiter.api.Assertions.*;
 
 import endercrypt.library.jpantry.JPantry;
+import endercrypt.library.jpantry.PantryBasket;
 import endercrypt.library.jpantry.exception.JPantryAuthenticationException;
 
 import org.junit.jupiter.api.Test;
+
+import com.google.gson.JsonObject;
 
 
 public class StandardUnitTests
 {
 	private static final String token = System.getenv("PANTRY_TOKEN");
+	private static final String testBasket = "JUNIT_TEST";
 	
 	@Test
 	public void testThatValidLoginWorks()
@@ -35,5 +39,27 @@ public class StandardUnitTests
 				.login();
 			
 		});
+	}
+	
+	@Test
+	public void testThatDeletesWork()
+	{
+		JPantry pantry = new JPantry.Builder()
+			.setToken(token)
+			.login();
+		
+		PantryBasket basket = pantry.getBasket(testBasket);
+		
+		// ensure its already empty
+		basket.deleteJson();
+		
+		assertFalse(basket.deleteJson().complete());
+		
+		// set value
+		JsonObject sample = new JsonObject();
+		sample.addProperty("key", "value");
+		basket.setJson(sample).complete();
+		
+		assertTrue(basket.deleteJson().complete());
 	}
 }
