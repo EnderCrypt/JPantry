@@ -76,4 +76,30 @@ public class StandardUnitTests
 		
 		assertTrue(basket.deleteJson().complete());
 	}
+	
+	@Test
+	public void testThatMergeWorks()
+	{
+		JPantry pantry = new JPantry.Builder()
+			.setToken(token)
+			.login();
+		
+		PantryBasket basket = pantry.getBasket(testBasket);
+		
+		basket.deleteJson();
+		
+		JsonObject a = new JsonObject();
+		a.addProperty("a", "1");
+		basket.setJson(a).complete();
+		
+		JsonObject b = new JsonObject();
+		b.addProperty("b", "2");
+		basket.mergeJson(b).complete();
+		
+		JsonObject expected = new JsonObject();
+		expected.addProperty("a", "1");
+		expected.addProperty("b", "2");
+		
+		assertEquals(expected, basket.getJson().complete());
+	}
 }
