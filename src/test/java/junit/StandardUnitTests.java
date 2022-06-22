@@ -2,6 +2,7 @@ package junit;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import endercrypt.library.jpantry.JPantry;
 import endercrypt.library.jpantry.PantryBasket;
@@ -11,6 +12,8 @@ import endercrypt.library.jpantry.exception.JPantryAuthenticationException;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.JsonObject;
+
+import junit.utility.InstantExecutor;
 
 
 public class StandardUnitTests
@@ -121,5 +124,28 @@ public class StandardUnitTests
 		
 		time = System.currentTimeMillis() - time;
 		assertTrue(time < 5);
+	}
+	
+	@Test
+	public void testThatAsyncCallbacksComplete()
+	{
+		JPantry pantry = new JPantry.Builder()
+			.setToken(token)
+			.setExecutor(new InstantExecutor())
+			.login();
+		
+		PantryBasket basket = pantry.getBasket(testBasket);
+		
+		basket.deleteJson().complete();
+		
+		Runnable callback = mock(Runnable.class);
+		
+		doNothing().when(callback).run();
+		
+		JsonObject sample = new JsonObject();
+		sample.addProperty("key", "value");
+		basket.setJson(sample).queue(callback);
+		
+		verify(callback).run();
 	}
 }
