@@ -102,4 +102,24 @@ public class StandardUnitTests
 		
 		assertEquals(expected, basket.getJson().complete());
 	}
+	
+	@Test
+	public void testThatAsyncRunsInBackround()
+	{
+		JPantry pantry = new JPantry.Builder()
+			.setToken(token)
+			.login();
+		
+		PantryBasket basket = pantry.getBasket(testBasket);
+		
+		basket.deleteJson();
+		
+		long time = System.currentTimeMillis();
+		JsonObject sample = new JsonObject();
+		sample.addProperty("key", "value");
+		basket.setJson(sample).queue();
+		
+		time = System.currentTimeMillis() - time;
+		assertTrue(time < 5);
+	}
 }
