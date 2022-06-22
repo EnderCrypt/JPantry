@@ -105,23 +105,26 @@ public class PantryBasket
 		};
 	}
 	
-	public VoidPantryTask deleteJson()
+	/**
+	 * @return true if a json was present and deleted
+	 */
+	public PantryTask<Boolean> deleteJson()
 	{
-		return new VoidPantryTask(core)
+		return new PantryTask<>(core)
 		{
 			@Override
-			protected Void perform() throws JPantryException
+			protected Boolean perform() throws JPantryException
 			{
+				cachedJson.reset();
 				try
 				{
 					core.getAgent().requestVoid(Method.DELETE, "basket/" + name, null);
+					return true;
 				}
 				catch (JPantryRejectedException e)
 				{
-					// the basket didn't exist anyways
+					return false;
 				}
-				cachedJson.reset();
-				return null;
 			}
 		};
 	}
