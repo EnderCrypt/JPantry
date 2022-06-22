@@ -29,6 +29,11 @@ public abstract class VoidPantryTask extends AbstractPantryTask<Void>
 		asyncPerform(null, null);
 	}
 	
+	public void queue(Runnable callback)
+	{
+		asyncPerform((v) -> callback.run(), null);
+	}
+	
 	public void queue(Consumer<JPantryException> onFail)
 	{
 		asyncPerform(null, onFail);
