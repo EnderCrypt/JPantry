@@ -30,7 +30,7 @@ public class Main
 		// delete any old json value in this basket if one already exist
 		coordinateBasket.deleteJson().complete();
 		// .complete() performs this action in a blocking way
-		// some actions .complete() and .queue(callback) will return a value
+		// some actions return a value back in .complete() or .queue(callback)
 		
 		// set the value of a basket
 		JsonObject firstJson = new JsonObject();
