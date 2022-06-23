@@ -31,6 +31,7 @@ public class Main
 		coordinateBasket.deleteJson().complete();
 		// .complete() performs this action in a blocking way
 		// some actions return a value back in .complete() or .queue(callback)
+		// .deleteJson() for example, returns a boolean: true if a json value existed and was deleted
 		
 		// set the value of a basket
 		JsonObject firstJson = new JsonObject();
