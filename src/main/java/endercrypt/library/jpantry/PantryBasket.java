@@ -39,18 +39,19 @@ public class PantryBasket
 		this.core = Objects.requireNonNull(core, "core");
 		this.name = Objects.requireNonNull(name, "name");
 		
-		this.cachedJson = new PantryCache<>(core, () -> {
-			
-			try
-			{
-				return core.getAgent().requestJson(Method.GET, "basket/" + name, null);
-			}
-			catch (JPantryRejectedException e)
-			{
-				return null;
-			}
-			
-		});
+		this.cachedJson = new PantryCache<>(core, this::internalGetJson);
+	}
+	
+	private JsonObject internalGetJson()
+	{
+		try
+		{
+			return core.getAgent().requestJson(Method.GET, "basket/" + name, null);
+		}
+		catch (JPantryRejectedException e)
+		{
+			return null;
+		}
 	}
 	
 	public String getName()
